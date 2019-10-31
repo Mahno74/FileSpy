@@ -1,2 +1,2 @@
 # FileSpy
-Logs real-time directory content changes
+Logs the appearance and deletion of files in a directory in real time
