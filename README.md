@@ -1,2 +1,2 @@
 # FileSpy
-Logs the appearance and deletion of files in a directory in real time
+Следит за появлением либо удалением файлов в выбранной папке. Выводит изменения в реальном времени + ведет файл лога
