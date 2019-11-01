@@ -10,7 +10,7 @@ namespace FileSpy
     {
         public readonly string logString = " (" + DateTime.Now.ToString("dd.MM.yyyy (HH:mm)") + ")" + "\r\n"; //временная строка для лога
         public string dirPath, filePath;
-        private List<string> default_FileCollection = new List<string>(); //дефолтный список файлов
+        private List<string> default_FileCollection = new List<string>(); //начальный список файлов
         private List<string> changed_FileCollection = new List<string>(); //измененный список файлов
 
         public Form1()
