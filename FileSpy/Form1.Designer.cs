@@ -34,23 +34,25 @@
             this.button1 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.button_ClearLog = new System.Windows.Forms.Button();
-            this.textBox_TargetPath = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.наблюдаемыйКаталогToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.отчиститьИсториюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.оПрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.прописатьПутьККаталогуВручнуюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBox_Log
             // 
-            this.textBox_Log.Location = new System.Drawing.Point(12, 79);
+            this.textBox_Log.Location = new System.Drawing.Point(12, 54);
             this.textBox_Log.Multiline = true;
             this.textBox_Log.Name = "textBox_Log";
             this.textBox_Log.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_Log.Size = new System.Drawing.Size(483, 287);
+            this.textBox_Log.Size = new System.Drawing.Size(483, 312);
             this.textBox_Log.TabIndex = 0;
             // 
             // button1
@@ -78,13 +80,6 @@
             this.button_ClearLog.UseVisualStyleBackColor = true;
             this.button_ClearLog.Click += new System.EventHandler(this.Button_Click_ClearLog);
             // 
-            // textBox_TargetPath
-            // 
-            this.textBox_TargetPath.Location = new System.Drawing.Point(12, 27);
-            this.textBox_TargetPath.Name = "textBox_TargetPath";
-            this.textBox_TargetPath.Size = new System.Drawing.Size(483, 20);
-            this.textBox_TargetPath.TabIndex = 3;
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -99,7 +94,9 @@
             // 
             this.menuToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.наблюдаемыйКаталогToolStripMenuItem,
-            this.оПрограммеToolStripMenuItem});
+            this.отчиститьИсториюToolStripMenuItem,
+            this.оПрограммеToolStripMenuItem,
+            this.прописатьПутьККаталогуВручнуюToolStripMenuItem});
             this.menuToolStripMenuItem.Name = "menuToolStripMenuItem";
             this.menuToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
             this.menuToolStripMenuItem.Text = "Настройки";
@@ -107,14 +104,21 @@
             // наблюдаемыйКаталогToolStripMenuItem
             // 
             this.наблюдаемыйКаталогToolStripMenuItem.Name = "наблюдаемыйКаталогToolStripMenuItem";
-            this.наблюдаемыйКаталогToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.наблюдаемыйКаталогToolStripMenuItem.Size = new System.Drawing.Size(273, 22);
             this.наблюдаемыйКаталогToolStripMenuItem.Text = "Наблюдаемый каталог";
             this.наблюдаемыйКаталогToolStripMenuItem.Click += new System.EventHandler(this.НаблюдаемыйКаталогToolStripMenuItem_Click);
+            // 
+            // отчиститьИсториюToolStripMenuItem
+            // 
+            this.отчиститьИсториюToolStripMenuItem.Name = "отчиститьИсториюToolStripMenuItem";
+            this.отчиститьИсториюToolStripMenuItem.Size = new System.Drawing.Size(273, 22);
+            this.отчиститьИсториюToolStripMenuItem.Text = "Отчистить историю";
+            this.отчиститьИсториюToolStripMenuItem.Click += new System.EventHandler(this.отчиститьИсториюToolStripMenuItem_Click);
             // 
             // оПрограммеToolStripMenuItem
             // 
             this.оПрограммеToolStripMenuItem.Name = "оПрограммеToolStripMenuItem";
-            this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.оПрограммеToolStripMenuItem.Size = new System.Drawing.Size(273, 22);
             this.оПрограммеToolStripMenuItem.Text = "О программе";
             this.оПрограммеToolStripMenuItem.Click += new System.EventHandler(this.ОПрограммеToolStripMenuItem_Click);
             // 
@@ -124,12 +128,28 @@
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(12, 27);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(483, 21);
+            this.comboBox1.TabIndex = 6;
+            this.comboBox1.DropDownClosed += new System.EventHandler(this.comboBox1_DropDownClosed);
+            // 
+            // прописатьПутьККаталогуВручнуюToolStripMenuItem
+            // 
+            this.прописатьПутьККаталогуВручнуюToolStripMenuItem.Name = "прописатьПутьККаталогуВручнуюToolStripMenuItem";
+            this.прописатьПутьККаталогуВручнуюToolStripMenuItem.Size = new System.Drawing.Size(273, 22);
+            this.прописатьПутьККаталогуВручнуюToolStripMenuItem.Text = "Прописать путь к каталогу вручную";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(511, 407);
-            this.Controls.Add(this.textBox_TargetPath);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.button_ClearLog);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox_Log);
@@ -154,13 +174,15 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button button_ClearLog;
-        private System.Windows.Forms.TextBox textBox_TargetPath;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem menuToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem наблюдаемыйКаталогToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem оПрограммеToolStripMenuItem;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ToolStripMenuItem отчиститьИсториюToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem прописатьПутьККаталогуВручнуюToolStripMenuItem;
     }
 }
 

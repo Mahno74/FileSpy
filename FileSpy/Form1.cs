@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FileSpy;
+using FileSpy.Properties;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,8 +10,10 @@ namespace FileSpy
 {
     public partial class Form1 : Form
     {
+
         public readonly string logString = " (" + DateTime.Now.ToString("dd.MM.yyyy (HH:mm)") + ")" + "\r\n"; //временная строка для лога
-        public string dirPath, filePath;
+        public string filePath;
+        private List<string> historyList = new List<string>(); //список последних каталогов наблюдаемых каталогов
         private List<string> default_FileCollection = new List<string>(); //начальный список файлов
         private List<string> changed_FileCollection = new List<string>(); //измененный список файлов
 
@@ -24,16 +28,15 @@ namespace FileSpy
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.Text = "FileSpy v1.1 (c) Юрасов В.В.";
+            this.Text = "FileSpy v1.2 (c) Юрасов В.В.";
             ReadSettings(); //получаем первоначальные настройки
-            dirPath = textBox_TargetPath.Text;
             filePath = @"log.txt";
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
             DirectoryInfo dir;
-            try { dir = new DirectoryInfo(textBox_TargetPath.Text); }
+            try { dir = new DirectoryInfo(comboBox1.Text); }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
@@ -43,25 +46,21 @@ namespace FileSpy
             {
                 MessageBox.Show("Выбранного каталога не существует!"); return;
             }
-            dirPath = textBox_TargetPath.Text;
-            SaveSettings();
             default_FileCollection = ListGenerator(); //получаем список файлов
-
             if (timer1.Enabled == false)
             {
                 button1.Text = "STOP";
                 timer1.Enabled = true;
-                textBox_TargetPath.Enabled = false;
+                comboBox1.Enabled = false;
                 return;
             }
             if (timer1.Enabled == true)
             {
                 button1.Text = "START";
                 timer1.Enabled = false;
-                textBox_TargetPath.Enabled = true;
+                comboBox1.Enabled = true;
                 return;
             }
-
         }
         private void Comprase(List<string> base_FileCollection) //сравнием старый и новый список
         {
@@ -93,7 +92,7 @@ namespace FileSpy
         public List<string> ListGenerator() //получает список файлов из указаной папки
         {
             List<string> list = new List<string>();
-            DirectoryInfo dir = new DirectoryInfo(dirPath);
+            DirectoryInfo dir = new DirectoryInfo(comboBox1.Text);
             FileInfo[] fileColection = dir.GetFiles(); //получаем набор файлов в папке
             foreach (var f in fileColection)
                 list.Add(f.Name);
@@ -120,32 +119,38 @@ namespace FileSpy
         {
             Comprase(default_FileCollection);
         }
-        private void SaveSettings() //сохрание настроек
+        private void SaveSettings(string newPath) //сохрание настроек
         {
-            try
+            Settings.Default.savedDir = newPath;
+            Settings.Default.Save();
+            if (!historyList.Contains(newPath)) //если такого каталога еще не выбиралось записываем его в историю
             {
-                using (BinaryWriter writer = new BinaryWriter(File.OpenWrite("settings.bin")))
-                {
-                    writer.Write(textBox_TargetPath.Text);
-                }
-            }
-            catch
-            {
-                return;
+                StreamWriter sw = new StreamWriter("history.txt", true, System.Text.Encoding.GetEncoding(1251));
+                sw.WriteLine(newPath);
+                sw.Close();
+                historyList.Add(newPath);
+                comboBox1.DataSource = null;
+                comboBox1.DataSource = historyList;
             }
         }
         private void ReadSettings() //чтение настроек
         {
-            try
+            FileInfo fi = new FileInfo(Application.StartupPath + "\\history.txt");
+            if (!fi.Exists)
             {
-                using (BinaryReader readerData = new BinaryReader(File.OpenRead("settings.bin")))
-                {
-                    textBox_TargetPath.Text = readerData.ReadString();
-                }
+                FileStream fs = fi.Create();
+                fs.Close();
             }
-            catch (FileNotFoundException)
+            else
             {
-                return;
+                StreamReader sr = new StreamReader(Application.StartupPath + "\\history.txt", System.Text.Encoding.GetEncoding(1251));
+                while (!sr.EndOfStream)
+                {
+                    historyList.Add(sr.ReadLine());
+                }
+                sr.Close();
+                comboBox1.DataSource = historyList;
+                comboBox1.Text = Settings.Default.savedDir;
             }
 
         }
@@ -170,12 +175,28 @@ namespace FileSpy
             WindowState = FormWindowState.Normal;
         }
 
+        private void отчиститьИсториюToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            comboBox1.DataSource = null;
+            FileInfo fi = new FileInfo(Application.StartupPath + "\\history.txt");
+            if (fi.Exists) fi.Delete();
+
+        }
+
         private void НаблюдаемыйКаталогToolStripMenuItem_Click(object sender, EventArgs e) //выбор каталога для наблюдения
         {
             folderBrowserDialog1.Description = "Выберите каталог для отслеживания";
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.Cancel)
-                return;
-            textBox_TargetPath.Text = folderBrowserDialog1.SelectedPath;
+            folderBrowserDialog1.ShowNewFolderButton = false;
+            folderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer;
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.Cancel) return;
+            string newPath = folderBrowserDialog1.SelectedPath; //выбранный путь
+            comboBox1.Text = newPath;
+            SaveSettings(newPath);
+        }
+        private void comboBox1_DropDownClosed(object sender, EventArgs e) //сохраняем последний выбранный каталог
+        {
+            if(comboBox1.Text == "") return;
+            SaveSettings(comboBox1.Text); 
         }
     }
 }
