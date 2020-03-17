@@ -17,7 +17,7 @@ namespace FileSpy
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             if(textBox1.Text.Length < 3)  return; //небольшая проверка на правильность пути
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(textBox1.Text);
@@ -30,9 +30,9 @@ namespace FileSpy
             }
         }
 
-        private void textBox1_KeyPress(object sender, KeyPressEventArgs e) //нажатие кнопок в поле
+        private void TextBox1_KeyPress(object sender, KeyPressEventArgs e) //нажатие кнопок в поле
         {
-            if(e.KeyChar == (char)Keys.Enter) button1_Click(sender, e); //по ентер отправляем нажатие кнопки
+            if(e.KeyChar == (char)Keys.Enter) Button1_Click(sender, e); //по ентер отправляем нажатие кнопки
             if (e.KeyChar == (char)Keys.Escape) this.Close(); //о Esc  выходим
         }
     }
